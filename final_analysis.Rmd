@@ -1,6 +1,6 @@
 ---
-title: "project title"
-date: "date"
+title: "Is There an Association Between Religion and Income"
+date: "October 15 2014"
 output:
   html_document:
     theme: cerulean
@@ -18,7 +18,7 @@ load(url("http://bit.ly/dasi_gss_data"))
 
 ### Introduction:
 
-Religious affilitation is still common in the United States. As we can see from the output below only 11% of Americans list None as their religion. This analysis will consider the interesting issue of religion and household income. We look at the question of whether religious affiliation and personal income are associated.
+Religious affilitation is still common in the United States. As we can see from the output below only 11% of Americans list None as their religion. This analysis will consider the interesting issue of religion and household income. We look at the following question. __Are religious affiliation and personal income are associated?__
 
 ```{r}
 prop.table(table(gss$relig))*100
