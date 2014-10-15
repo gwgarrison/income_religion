@@ -1,0 +1,41 @@
+---
+title: "project title"
+date: "date"
+output:
+  html_document:
+    theme: cerulean
+---
+
+<!-- For more info on RMarkdown see http://rmarkdown.rstudio.com/ -->
+
+<!-- Enter the code required to load your data in the space below. The data will be loaded but the line of code won't show up in your write up (echo=FALSE) in order to save space-->
+```{r echo=FALSE}
+library(ggplot2);library(plyr)
+load(url("http://bit.ly/dasi_gss_data"))
+```
+
+<!-- In the remainder of the document, add R code chunks as needed -->
+
+### Introduction:
+
+Insert introduction here...
+
+### Data:
+
+Insert data section here...
+
+### Exploratory data analysis:
+
+Insert exploratory data analysis here...
+
+### Inference:
+
+Insert inference section here...
+
+### Conclusion:
+
+Insert conclusion here...
+
+### References:
+Smith, Tom W., Michael Hout, and Peter V. Marsden. General Social Survey, 1972-2012 [Cumulative File]. ICPSR34802-v1. Storrs, CT: Roper Center for Public Opinion Research, University of Connecticut /Ann Arbor, MI: Inter-university Consortium for Political and Social Research [distributors], 2013-09-11. doi:10.3886/ICPSR34802.v1
+Persistent URL: http://doi.org/10.3886/ICPSR34802.v1
