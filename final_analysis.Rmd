@@ -21,26 +21,74 @@ load(url("http://bit.ly/dasi_gss_data"))
 Religious affilitation is still common in the United States. As we can see from the output below only 11% of Americans list None as their religion. This analysis will consider the interesting issue of religion and household income. We look at the following question. __Are religious affiliation and personal income are associated?__
 
 ```{r}
-prop.table(table(gss$relig))*100
+prop.table(sort(table(gss$relig),decreasing=TRUE))*100
 ```
 
 
 ### Data:
 
-Insert data section here...
+The data for this analysis was collected from the General Social Survey [1]. The data set includes 57061 observations. The two variables used from the GSS data set are relig, a categorical variable indicating a repsondents religious affiliation, and the coninc variable, a numerical variable for the respondents income. The coninc variable is adjusted for inflation so we can use the data for every year of the study. The GSS is an observational study. We can only use the GSS data for generalizing the analysis for the population and not for claims of causality because the data is the result of an observational study.
 
 ### Exploratory data analysis:
 
 Insert exploratory data analysis here...
+```{r}
+# get rid of rows with NA for coninc
+gss <- gss[!is.na(gss$coninc),]
+gss <- gss[!is.na(gss$relig),c("relig","coninc")]
+gss <- gss[gss$relig %in% c("Protestant","Catholic","Other","Jewish","None"),]
+gss$relig <- factor(gss$relig)
+# get income statistics by religion
+stats <- ddply(gss, .(relig),summarise, 
+                 relig.count = length(relig),
+                 relig.mean= mean(coninc),
+                 relig.median = median(coninc),
+                 relig.max = max(coninc),
+                 relig.sd = sd(coninc)
+                 )
+options(width=120)
+```
+Summary Statistics:
+```{r}
+print(stats[order(stats$relig.mean,decreasing=TRUE),],row.names = FALSE)
+```
+
+Exploratory Plots:
+```{r}
+```{r Income_histogram,fig.width=8, fig.height=6}
+g <- ggplot(data=gss,aes(x=coninc)) + 
+     geom_histogram(binwidth=5000,color="black",fill="blue") + 
+     xlab("Income") + ylab("Frequency") + ggtitle("Histogram for Income")
+g
+```
+
+__Figure 1__ is a histogram showing the income variable as one would expect the distrution is right skewed because a few high income earners. This skewness is expected given the income inequality present in the United States.
+
+```{r Income_boxplot,fig.width=8, fig.height=6}
+m <- mean(gss$coninc)
+g <- ggplot(data=gss,aes(x=relig,y=coninc)) + geom_boxplot(aes(fill=factor(relig))) +
+           xlab("Religion") + ylab("Income") +
+           theme(legend.position = "none") +
+           geom_hline(y=m,color="red") + ggtitle("Income by Religion")
+g
+```
+
+__Figure 2__ is boxplot showing income differences by religion. One religion, Judism, clearly outpaces the others in terms of income. 
 
 ### Inference:
 
 Insert inference section here...
+```{r}
+fit <- lm(gss$coninc ~ gss$relig)
+anova.fit <- anova(fit)
+summary(anova.fit)
+```
+
 
 ### Conclusion:
 
 Insert conclusion here...
 
 ### References:
-Smith, Tom W., Michael Hout, and Peter V. Marsden. General Social Survey, 1972-2012 [Cumulative File]. ICPSR34802-v1. Storrs, CT: Roper Center for Public Opinion Research, University of Connecticut /Ann Arbor, MI: Inter-university Consortium for Political and Social Research [distributors], 2013-09-11. doi:10.3886/ICPSR34802.v1
+1. Smith, Tom W., Michael Hout, and Peter V. Marsden. General Social Survey, 1972-2012 [Cumulative File]. ICPSR34802-v1. Storrs, CT: Roper Center for Public Opinion Research, University of Connecticut /Ann Arbor, MI: Inter-university Consortium for Political and Social Research [distributors], 2013-09-11. doi:10.3886/ICPSR34802.v1
 Persistent URL: http://doi.org/10.3886/ICPSR34802.v1
