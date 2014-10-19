@@ -45,12 +45,12 @@ stats <- ddply(gss, .(relig),summarise,
                  )
 options(width=120)
 ```
-Summary Statistics:
+__Summary Statistics:__
 ```{r}
 print(stats[order(stats$relig.mean,decreasing=TRUE),],row.names = FALSE)
 ```
 
-Exploratory Plots:
+__Exploratory Plots:__
 ```{r}
 ```{r Income_histogram,fig.width=8, fig.height=6}
 g <- ggplot(data=gss,aes(x=coninc)) + 

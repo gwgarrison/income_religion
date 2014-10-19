@@ -53,16 +53,9 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="header">
 <h1 class="title">Is There an Association Between Religion and Income</h1>
-<h4 class="date"><em>October 15 2014</em></h4>
+<h4 class="date"><em>October 19 2014</em></h4>
 </div>
 
-
-<!-- For more info on RMarkdown see http://rmarkdown.rstudio.com/ -->
-
-<!-- Enter the code required to load your data in the space below. The data will be loaded but the line of code won't show up in your write up (echo=FALSE) in order to save space-->
-
-
-<!-- In the remainder of the document, add R code chunks as needed -->
 
 <div id="introduction" class="section level3">
 <h3>Introduction:</h3>
@@ -101,7 +94,7 @@ stats &lt;- ddply(gss, .(relig),summarise,
                  relig.sd = sd(coninc)
                  )
 options(width=120)</code></pre>
-<p>Summary Statistics:</p>
+<p><strong>Summary Statistics:</strong></p>
 <pre class="r"><code>print(stats[order(stats$relig.mean,decreasing=TRUE),],row.names = FALSE)</code></pre>
 <pre><code>##       relig relig.count relig.mean relig.median relig.max relig.sd
 ##      Jewish         965      68765        56836    180386    47081
@@ -109,7 +102,7 @@ options(width=120)</code></pre>
 ##        None        5527      46336        35471    180386    39794
 ##       Other         910      44396        35471    178266    35257
 ##  Protestant       30187      42004        33931    180386    33951</code></pre>
-<p>Exploratory Plots:</p>
+<p><strong>Exploratory Plots:</strong></p>
 <pre class="r"><code>g &lt;- ggplot(data=gss,aes(x=coninc)) + 
      geom_histogram(binwidth=5000,color=&quot;black&quot;,fill=&quot;blue&quot;) + 
      xlab(&quot;Income&quot;) + ylab(&quot;Frequency&quot;) + ggtitle(&quot;Histogram for Income&quot;)
