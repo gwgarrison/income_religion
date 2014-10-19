@@ -1,24 +1,21 @@
 ---
 title: "Is There an Association Between Religion and Income"
-date: "October 15 2014"
+date: "October 19 2014"
 output:
   html_document:
     theme: cerulean
 ---
 
-<!-- For more info on RMarkdown see http://rmarkdown.rstudio.com/ -->
 
-<!-- Enter the code required to load your data in the space below. The data will be loaded but the line of code won't show up in your write up (echo=FALSE) in order to save space-->
 ```{r echo=FALSE}
 library(ggplot2);library(plyr)
 load(url("http://bit.ly/dasi_gss_data"))
 ```
 
-<!-- In the remainder of the document, add R code chunks as needed -->
 
 ### Introduction:
 
-Religious affilitation is still common in the United States. As we can see from the output below only 11% of Americans list None as their religion. This analysis will consider the interesting issue of religion and household income. We look at the following question. __Are religious affiliation and personal income are associated?__
+Religious affiliation is still common in the United States. As we can see from the output below only 11% of Americans list None as their religion. This analysis will consider the interesting issue of religion and household income. We look at the following question. __Are religious affiliation and personal income are associated?__
 
 ```{r}
 prop.table(sort(table(gss$relig),decreasing=TRUE))*100
@@ -27,11 +24,11 @@ prop.table(sort(table(gss$relig),decreasing=TRUE))*100
 
 ### Data:
 
-The data for this analysis was collected from the General Social Survey [1]. The data set includes 57061 observations. The two variables used from the GSS data set are relig, a categorical variable indicating a repsondents religious affiliation, and the coninc variable, a numerical variable for the respondents income. The coninc variable is adjusted for inflation so we can use the data for every year of the study. The GSS is an observational study. We can only use the GSS data for generalizing the analysis for the population and not for claims of causality because the data is the result of an observational study.
+The data for this analysis was collected from the General Social Survey [1]. The data set includes 57061 observations. The data set was reduced to the five most common religious affiliation which are Protestant, Catholic, Jewish, None, and Other. We limited the data to these five in order to make the analysis more concise and easier to interpret. The two variables used from the GSS data set are relig, a categorical variable indicating a respondent's religious affiliation, and the coninc variable, a numerical variable for the respondents income. The coninc variable is adjusted for inflation so we can use the data for every year of the study. The GSS is an observational study. We can only use the GSS data for generalizing the analysis for the population and not for claims of causality because the data is the result of an observational study.
 
 ### Exploratory data analysis:
+The exploratory analysis below shows the possible association of religious affiliation and income. Especially interesting is __Figure 2__ which shows one religion, Judaism(Jewish), leading the others in terms of income.
 
-Insert exploratory data analysis here...
 ```{r}
 # get rid of rows with NA for coninc
 gss <- gss[!is.na(gss$coninc),]
@@ -62,7 +59,7 @@ g <- ggplot(data=gss,aes(x=coninc)) +
 g
 ```
 
-__Figure 1__ is a histogram showing the income variable as one would expect the distrution is right skewed because a few high income earners. This skewness is expected given the income inequality present in the United States.
+__Figure 1__ is a histogram showing the income variable as one would expect the distribution is right skewed because a few high income earners. This skewness is expected given the income inequality present in the United States.
 
 ```{r Income_boxplot,fig.width=8, fig.height=6}
 m <- mean(gss$coninc)
@@ -73,22 +70,29 @@ g <- ggplot(data=gss,aes(x=relig,y=coninc)) + geom_boxplot(aes(fill=factor(relig
 g
 ```
 
-__Figure 2__ is boxplot showing income differences by religion. One religion, Judism, clearly outpaces the others in terms of income. 
+__Figure 2__ is boxplot showing income differences by religion. One religion, Judaism, clearly outpaces the others in terms of income. 
 
 ### Inference:
 
-Insert inference section here...
+The Analysis of Variance Analysis (ANOVA) output below confirms the exploratory analysis that shows a disparity between income for the religious groups. The null hypothesis is that there is no difference in average income among the religious groups. The ANOVA output below returns the F statistic of 177.1 which has a p value very close to 0. This extremely low p value indicates that we should reject the null hypothesis.
+
+__Conditions for ANOVA Analysis__
+The three conditions needed for a successful ANOVA are independence, approximate normality, and constant variance [2]. The condition of independence is easily met since sample is random and much less than 10 percent of the population of the United States. The normality condition is not as clear cut since the data is right skewed. The number relative high number of samples allows us to pass this condition.  
+
+__ANOVA Output__
 ```{r}
-fit <- lm(gss$coninc ~ gss$relig)
-anova.fit <- anova(fit)
-summary(anova.fit)
+fit <- aov(gss$coninc ~ gss$relig)
+summary(fit)
+coefficients(fit)
 ```
 
 
 ### Conclusion:
 
-Insert conclusion here...
+While the GSS is an observational study and we cannot make a claim of causation that someone's religion determines helps determine their income, we can state there seems to be some association between religion and income.
+
 
 ### References:
 1. Smith, Tom W., Michael Hout, and Peter V. Marsden. General Social Survey, 1972-2012 [Cumulative File]. ICPSR34802-v1. Storrs, CT: Roper Center for Public Opinion Research, University of Connecticut /Ann Arbor, MI: Inter-university Consortium for Political and Social Research [distributors], 2013-09-11. doi:10.3886/ICPSR34802.v1
 Persistent URL: http://doi.org/10.3886/ICPSR34802.v1
+2. Diez, David, Christopher Barr, and Mine Cetinkaya-Rundel. Openintro Statistics. 2012.
